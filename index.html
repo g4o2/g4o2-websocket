@@ -44,11 +44,19 @@
     if(username) {
         socket.emit('user-connect', username);
     }
+
+    function getUserTimezone() {
+      return Intl.DateTimeFormat().resolvedOptions().timeZone;
+    }
+    function getUserDateTime() {
+      return new Date().toLocaleString('en-US', { timeZone: getUserTimezone() });
+    }
+
+
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         if (input.value) {
-          var date = new Date;
-          date = date.toGMTString();
+          var date = getUserDateTime();
           messageDetails = {
             username: username,
             message: input.value,
