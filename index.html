@@ -2,24 +2,35 @@
 <html>
   <head>
     <title>Socket.IO chat</title>
-    <style>
-    body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-
-      #form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
-      #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
-      #input:focus { outline: none; }
-      #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
-
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages > li { padding: 0.5rem 1rem; }
-      #messages > li:nth-child(odd) { background: #efefef; }
-    </style>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <ul id="messages"></ul>
-    <form id="form" action="">
-      <input id="input" autocomplete="off" /><button>Send</button>
-    </form>
+    <section id="guide">
+      <p>Press <kbd>Enter</kbd> to submit message</p>
+      <p>Press <kbd>/</kbd> to select <kbd>Esc</kbd> to deselect</p>
+    </section>
+    <section>
+      <div id="messages">
+        <p style='text-align:center;color: #ffa500;'>This is the start of all messages</p>
+
+        <div>
+          <a href='#'><img class='profile-image' src='/img/0000001.jpg'></a>
+          <div class="message-container">
+            <p class='message-info'>g4o2 2022/12/18</p>
+            <p class='message'><span>A message</span><button class='edit-message'>Edit</button></p>
+          </div>
+        </div>
+
+      </div>
+      <form id='form' action="" autocomplete="off">
+        <div>
+          <!--<input pattern=".{1,}" required title="3 characters minimum" id='message-input' type="text" name="message" size="60" placeholder="Enter message and submit" />-->
+          <input id='input' autocomplete="off" type="text" name="message" size="60" style="width: 55vw;"
+            placeholder="Enter message and submit" /><button class='btn button' id="send">Send</button>
+        </div>
+      </form>
+
+
     <script src="/socket.io/socket.io.js"></script>
     <script>     
     var socket = io();
@@ -43,17 +54,39 @@
     });
 
     socket.on('message-submit', function(msg) {
-        var item = document.createElement('li');
-        item.textContent = msg;
+        var item = document.createElement('div');
+        item.innerHTML = `<a href = '#' ><img class='profile-image' src='/img/0000001.jpg'></a><div class='message-container'><p class='message-info'>g4o2 2022/12/18</p><p class='message'><span>${msg}</span><button class='edit-message'>Edit</button></p></div>`;
         messages.appendChild(item);
-        window.scrollTo(0, document.body.scrollHeight);
-    });
+        window.scrollTo(0, document.getElementById('messages').scrollHeight);
+        /*document.body.scrollHeight*/
+      });
     socket.on('user-connect', function(username) {
         var item = document.createElement('li');
         item.textContent = `User ${username} connected`;
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
     })
+
+
+
+    window.addEventListener("keydown", event => {
+        if ((event.keyCode == 191)) {
+          if (input === document.activeElement) {
+            return;
+          } else {
+            input.focus();
+            input.select();
+            event.preventDefault();
+          }
+        }
+        if ((event.keyCode == 27)) {
+          if (input === document.activeElement) {
+            document.activeElement.blur();
+            window.focus();
+            event.preventDefault();
+          }
+        }
+      });
     </script>
   </body>
 </html>

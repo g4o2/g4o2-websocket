@@ -1,3 +1,14 @@
+/*
+    body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+
+      #form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
+      #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
+      #input:focus { outline: none; }
+      #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
+
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages > li { padding: 0.5rem 1rem; }
+      #messages > li:nth-child(odd) { background: #efefef; }*/
 @import url('https://fonts.googleapis.com/css2?family=Alumni+Sans+Pinstripe&family=Montserrat:wght@300&family=Orbitron&family=Work+Sans:wght@300&display=swap');
 
 body {
@@ -5,9 +16,14 @@ body {
     color: #ffffff;
     opacity: 87%;
     overflow-x: hidden;
+    background-image: url(/img/0000001.jpg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    background-size: cover;
 }
 
-#chatcontent {
+#messages {
     padding-left: 16px;
     border-radius: 8px;
     height: 45vh;
@@ -20,19 +36,19 @@ body {
 }
 
 
-#chatcontent::-webkit-scrollbar-track {
+#messages::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     background-color: #353935
         /*#F5F5F5*/
     ;
 }
 
-#chatcontent::-webkit-scrollbar {
+#messages::-webkit-scrollbar {
     width: 10px;
     background-color: #F5F5F5;
 }
 
-#chatcontent::-webkit-scrollbar-thumb {
+#messages::-webkit-scrollbar-thumb {
     background-color: #F90;
     background-image: -webkit-linear-gradient(45deg,
             rgba(255, 255, 255, .2) 25%,
@@ -82,14 +98,14 @@ body {
     font-family: monospace, sans-serif;
 }
 
-.stats {
+.message-info {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
     color: orange;
     margin-left: 50px;
 }
 
-.msg {
+.message {
     margin-top: -5px;
     font-size: 15px;
     font-weight: 100;
@@ -97,7 +113,7 @@ body {
     margin-left: 50px;
 }
 
-#message-input {
+#input {
     height: 36px;
     font-size: 14px;
     width: 70%;
@@ -109,39 +125,15 @@ body {
     transition: all .2s ease-in-out;
 }
 
-#message-input:focus {
+#input:focus {
     outline: none !important;
     border: 3px solid #ffa500;
     box-shadow: 0 0 10px 1px #007bff;
 }
-
-#page-header {
-    margin-top: -1.7%;
-    margin-left: 0.3%;
-}
-
-#index-page-link {
-    font-family: 'Orbitron', arial;
-    font-size: 8vw;
-    text-transform: uppercase;
-    user-select: none;
-}
-
-#index-page-link a {
-    color: #ffa500;
-    cursor: pointer;
-    transition: color .2s ease-in-out;
-    text-decoration: none;
-}
-
-#index-page-link a:hover {
-    color: #ffffff;
-}
-
 #guide {
     height: 20vh;
-    margin-top: -7.3%;
-    margin-bottom: 1.5%;
+    margin-top: 30px;
+    margin-bottom: 30px;
     border-radius: 10px;
     padding: 20px 0px 20px 30px;
     overflow: auto;
@@ -165,21 +157,14 @@ body {
     text-align: center;
 }
 
-#submit {
+#send {
     background-color: rgb(1, 1, 120);
 }
 
-#submit:hover {
+#send:hover {
     background-color: transparent;
 }
 
-#logout {
-    background-color: rgb(107, 0, 0);
-}
-
-#logout:hover {
-    background-color: transparent;
-}
 
 .button {
     height: 35px;
@@ -238,47 +223,6 @@ body {
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Alumni+Sans+Pinstripe&family=Montserrat:wght@300&family=Orbitron&family=Work+Sans:wght@300&display=swap');
-
-.container {
-    margin-left: 40px;
-    margin-top: 20px;
-}
-
-#profile {
-    position: fixed;
-    right: 10px;
-    top: 10px;
-    background-color: rgba(0, 0, 0, .5);
-    padding: 40px;
-    text-align: center;
-    transition: opacity .3s ease-in;
-}
-
-
-#close-btn {
-    background-color: transparent;
-    color: #ffa500;
-}
-
-#close-btn-two {
-    background-color: transparent;
-    color: #ffa500;
-}
-
-#close-btn:hover {
-    background-color: transparent !important;
-    transition: all .1s ease-in !important;
-    cursor: pointer;
-    color: #fff;
-}
-
-#close-btn-two:hover {
-    background-color: transparent !important;
-    transition: all .1s ease-in !important;
-    cursor: pointer;
-    color: #fff;
-}
-
 .btn {
     font-family: Arial, Helvetica, sans-serif;
     text-decoration: none;
@@ -299,23 +243,7 @@ body {
     background-color: transparent;
 }
 
-#index-btn {
-    display: inline-block;
-    font-family: orbitron;
-    font-size: 25px;
-    color: #ffa500;
-    padding: 8px;
-    border-radius: 8px;
-    background-color: rgba(41, 41, 41, .8);
-    transition: color .2s ease-in-out;
-}
-
-#index-btn:hover {
-    color: #fff;
-    text-decoration: none;
-}
-
-.chat-btn {
+.edit-message {
     margin-left: 10px;
     font-size: 10px;
     color: #ffa500;
@@ -324,7 +252,7 @@ body {
     box-shadow: 0px 0px 4px 0px #ffa500;
 }
 
-.chat-btn:hover {
+.edit-message:hover {
     box-shadow: none;
 }
 
@@ -351,7 +279,13 @@ body {
     padding: 0px 3px 2px 5px;
     border-radius: 2px;
 }
+
 .user-ping::before {
     display: inline-block;
     content: '🔔';
+}
+
+.message-container {
+    margin-left: 10px;
+    margin-top: 18px;
 }

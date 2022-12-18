@@ -5,6 +5,12 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
+app.get('/style.css', (req, res) => {
+  res.sendFile(__dirname + '/style.css');
+})
+app.get('/img/0000001.jpg', (req, res) => {
+  res.sendFile(__dirname + '/img/0000001.jpg');
+})
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
