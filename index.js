@@ -1,10 +1,17 @@
 const express = require('express');
 const app = express();
 const http = require('http');
+const mysql = require('mysql')
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
+var con = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME
+});
 app.get('/style.css', (req, res) => {
   res.sendFile(__dirname + '/style.css');
 })
@@ -28,6 +35,19 @@ io.on('connection', (socket) => {
   socket.on('message-submit', (messageDetails) => {
     io.emit('message-submit', messageDetails);
     console.log(messageDetails);
+    con.connect(function(err) {
+      if (err) throw err;
+      console.log("Connected");
+    });
+    let username = messageDetails.username;
+    let message = messageDetails.message;
+    let date = messageDetails.date;
+    var sql = "insert into g4o2 (username, message, message_date) values (?, ?, ?)";
+    con.query(sql, [username, message, date], function(err, result) {
+      if (err) throw err;
+      console.log("1 record inserted");
+    });
+    con.end();
   });
 })
 
