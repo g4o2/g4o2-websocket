@@ -16,7 +16,6 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  // console.log('user connected');
   socket.on('user-connect', (username) => {
     console.log(`user ${username} connected`);
     io.emit('user-connect', username);
@@ -24,11 +23,13 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
-    
+});
+io.on('connection', (socket) => {
   socket.on('message-submit', (messageDetails) => {
     io.emit('message-submit', messageDetails);
+    console.log(messageDetails);
   });
-});
+})
 
 server.listen(3000, () => {
   console.log('listening on *:3000');

@@ -45,19 +45,10 @@
     if(username) {
         socket.emit('user-connect', username);
     }
-
-    function getUserTimezone() {
-      return Intl.DateTimeFormat().resolvedOptions().timeZone;
-    }
-    function getUserDateTime() {
-      return new Date().toLocaleString('en-US', { timeZone: getUserTimezone() });
-    }
-
-
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         if (input.value) {
-          var date = getUserDateTime();
+          let date = new Date().toLocaleString();
           messageDetails = {
             username: username,
             message: input.value,
@@ -68,10 +59,15 @@
         }
     });
 
+    // function getUserTimeZone() {
+    //   return Intl.DateTimeFormat().resolvedOptions().timeZone;
+    // }
     socket.on('message-submit', function(messageDetails) {
-      var pfpLink = '#';
-      var item = document.createElement('div');
-      item.innerHTML = `<a href='${pfpLink}' ><img class='profile-image' src='/img/0000001.jpg'></a><div class='message-container'><p class='message-info'>${messageDetails.username} ${messageDetails.date}</p><p class='message'><span style='word-wrap: break-word;'>${messageDetails.message}</span><button class='edit-message'>Edit</button></p></div>`;
+      let pfpLink = '#';
+      let item = document.createElement('div');
+      let date = messageDetails.date;
+      date.toLocaleString;
+      item.innerHTML = `<a href='${pfpLink}' ><img class='profile-image' src='/img/0000001.jpg'></a><div class='message-container'><p class='message-info'>${messageDetails.username} ${date}</p><p class='message'><span style='word-wrap: break-word;'>${messageDetails.message}</span><button class='edit-message'>Edit</button></p></div>`;
       messages.appendChild(item);
       let chat = document.getElementById('messages')
       chat.scrollTop = chat.scrollHeight;
