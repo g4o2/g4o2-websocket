@@ -71,7 +71,7 @@
     socket.on('message-submit', function(messageDetails) {
       var pfpLink = '#';
       var item = document.createElement('div');
-      item.innerHTML = `<a href='${pfpLink}' ><img class='profile-image' src='/img/0000001.jpg'></a><div class='message-container'><p class='message-info'>${messageDetails.username} ${messageDetails.date}</p><p class='message'><span>${messageDetails.message}</span><button class='edit-message'>Edit</button></p></div>`;
+      item.innerHTML = `<a href='${pfpLink}' ><img class='profile-image' src='/img/0000001.jpg'></a><div class='message-container'><p class='message-info'>${messageDetails.username} ${messageDetails.date}</p><p class='message'><span style='word-wrap: break-word;'>${messageDetails.message}</span><button class='edit-message'>Edit</button></p></div>`;
       messages.appendChild(item);
       let chat = document.getElementById('messages')
       chat.scrollTop = chat.scrollHeight;
