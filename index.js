@@ -25,8 +25,8 @@ io.on('connection', (socket) => {
     console.log('user disconnected');
   });
     
-  socket.on('message-submit', (msg) => {
-    io.emit('message-submit', msg);
+  socket.on('message-submit', (messageDetails) => {
+    io.emit('message-submit', messageDetails);
   });
 });
 

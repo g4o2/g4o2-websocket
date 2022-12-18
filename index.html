@@ -12,15 +12,14 @@
     <section>
       <div id="messages">
         <p style='text-align:center;color: #ffa500;'>This is the start of all messages</p>
-
+        <!-- 
         <div>
           <a href='#'><img class='profile-image' src='/img/0000001.jpg'></a>
           <div class="message-container">
             <p class='message-info'>g4o2 2022/12/18</p>
             <p class='message'><span>A message</span><button class='edit-message'>Edit</button></p>
           </div>
-        </div>
-
+        </div> -->
       </div>
       <form id='form' action="" autocomplete="off">
         <div>
@@ -48,20 +47,28 @@
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         if (input.value) {
-            socket.emit('message-submit', input.value);
+          var date = new Date;
+          date = date.toGMTString();
+          messageDetails = {
+            username: username,
+            message: input.value,
+            date: date
+          }
+            socket.emit('message-submit', messageDetails);
             input.value = '';
         }
     });
 
-    socket.on('message-submit', function(msg) {
-        var item = document.createElement('div');
-        item.innerHTML = `<a href = '#' ><img class='profile-image' src='/img/0000001.jpg'></a><div class='message-container'><p class='message-info'>g4o2 2022/12/18</p><p class='message'><span>${msg}</span><button class='edit-message'>Edit</button></p></div>`;
-        messages.appendChild(item);
-        window.scrollTo(0, document.getElementById('messages').scrollHeight);
-        /*document.body.scrollHeight*/
-      });
+    socket.on('message-submit', function(messageDetails) {
+      var pfpLink = '#';
+      var item = document.createElement('div');
+      item.innerHTML = `<a href='${pfpLink}' ><img class='profile-image' src='/img/0000001.jpg'></a><div class='message-container'><p class='message-info'>${messageDetails.username} ${messageDetails.date}</p><p class='message'><span>${messageDetails.message}</span><button class='edit-message'>Edit</button></p></div>`;
+      messages.appendChild(item);
+      let chat = document.getElementById('messages')
+      chat.scrollTop = chat.scrollHeight;
+    });
     socket.on('user-connect', function(username) {
-        var item = document.createElement('li');
+        var item = document.createElement('div');
         item.textContent = `User ${username} connected`;
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
