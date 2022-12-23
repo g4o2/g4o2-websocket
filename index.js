@@ -22,6 +22,14 @@ app.get('/img/0000001.jpg', (req, res) => {
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
+app.get("/:username/chat", (req, res, next) => {
+  req.username = req.params.username;
+  next()
+}, (req, res, next) => {
+  res.send({
+    echo: req.username
+  })
+})
 
 io.on('connection', (socket) => {
   socket.on('user-connect', (username) => {
