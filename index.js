@@ -1,17 +1,18 @@
 const express = require('express');
 const app = express();
 const http = require('http');
-const mysql = require('mysql')
+// const mysql = require('mysql')
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-
+/*
 var con = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME
 });
+*/
 app.get('/style.css', (req, res) => {
   res.sendFile(__dirname + '/style.css');
 })
@@ -39,6 +40,7 @@ io.on('connection', (socket) => {
       if (err) throw err;
       console.log("Connected");
     });
+    /*
     let username = messageDetails.username;
     let message = messageDetails.message;
     let date = messageDetails.date;
@@ -48,6 +50,7 @@ io.on('connection', (socket) => {
       console.log("1 record inserted");
     });
     con.end();
+    */
   });
 })
 
