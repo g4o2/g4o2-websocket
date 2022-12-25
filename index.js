@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const http = require('http');
+const { dirname } = require('path');
 // const mysql = require('mysql')
 const server = http.createServer(app);
 const { Server } = require("socket.io");
@@ -30,7 +31,6 @@ app.get("/:username/chat", (req, res, next) => {
     echo: req.username
   })
 })
-
 io.on('connection', (socket) => {
   socket.on('user-connect', (username) => {
     console.log(`user ${username} connected`);
@@ -44,11 +44,10 @@ io.on('connection', (socket) => {
   socket.on('message-submit', (messageDetails) => {
     io.emit('message-submit', messageDetails);
     console.log(messageDetails);
-    con.connect(function(err) {
+    /*con.connect(function(err) {
       if (err) throw err;
       console.log("Connected");
     });
-    /*
     let username = messageDetails.username;
     let message = messageDetails.message;
     let date = messageDetails.date;
