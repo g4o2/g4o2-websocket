@@ -1,8 +1,7 @@
 const express = require('express');
 const app = express();
 const http = require('http');
-const { dirname } = require('path');
-// const mysql = require('mysql')
+const mysql = require('mysql')
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
@@ -14,6 +13,14 @@ var con = mysql.createConnection({
   database: process.env.DB_NAME
 });
 */
+
+var con = mysql.createConnection({
+  host: 'localhost',
+  user: 'g4o2',
+  password: 'g4o2',
+  database: 'misc'
+});
+
 app.get('/style.css', (req, res) => {
   res.sendFile(__dirname + '/style.css');
 })
@@ -23,6 +30,7 @@ app.get('/img/0000001.jpg', (req, res) => {
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
+/*
 app.get("/:username/chat", (req, res, next) => {
   req.username = req.params.username;
   next()
@@ -31,6 +39,7 @@ app.get("/:username/chat", (req, res, next) => {
     echo: req.username
   })
 })
+*/
 io.on('connection', (socket) => {
   socket.on('user-connect', (username) => {
     console.log(`user ${username} connected`);
@@ -44,10 +53,11 @@ io.on('connection', (socket) => {
   socket.on('message-submit', (messageDetails) => {
     io.emit('message-submit', messageDetails);
     console.log(messageDetails);
-    /*con.connect(function(err) {
+    con.connect(function (err) {
       if (err) throw err;
       console.log("Connected");
     });
+    /*
     let username = messageDetails.username;
     let message = messageDetails.message;
     let date = messageDetails.date;
@@ -60,7 +70,13 @@ io.on('connection', (socket) => {
     */
   });
 })
-
+io.on('connection', (socket) => {
+  socket.on('load-messages', (username) => {
+    console.log(`${username} load chat`)
+    messageData=   `${username} load chat`;
+    io.emit('load-messages', messageData);
+  })
+})
 server.listen(3000, () => {
   console.log('listening on *:3000');
 });

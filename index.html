@@ -39,12 +39,17 @@
     var form = document.getElementById('form');
     var input = document.getElementById('input');
     const usernameRegex = /\w/g;
+
     do {
-        username = prompt('Username');
+      username = prompt('Username');
     } while (!username.match(usernameRegex))
     if(username) {
-        socket.emit('user-connect', username);
+      socket.emit('user-connect', username);
     }
+    socket.emit('load-messages', username);
+    socket.on('load-messages', function (messageData) {
+      console.log(messageData);
+    })
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         if (input.value) {
@@ -77,6 +82,10 @@
         item.textContent = `User ${username} connected`;
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
+    })
+
+    socket.on('load-chat', function(chatData) {
+      console.log(chatData);
     })
 
 
