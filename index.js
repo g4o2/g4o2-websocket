@@ -7,10 +7,10 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 
 var con = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME
+  host: 'sql12.freemysqlhosting.net',
+  user: 'sql12561191',
+  password: 'JFfUUVYYB3',
+  database: 'sql12561191'
 });
 
 con.connect(function (err) {
@@ -23,6 +23,9 @@ app.get('/style.css', (req, res) => {
 })
 app.get('/img/0000001.jpg', (req, res) => {
   res.sendFile(__dirname + '/img/0000001.jpg');
+})
+app.get('/img/default-pfp.png', (req, res) => {
+  res.sendFile(__dirname + '/img/default-pfp.png');
 })
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');

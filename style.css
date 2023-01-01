@@ -165,6 +165,12 @@ body {
     background-color: transparent;
 }
 
+.not-allowed {
+    cursor: not-allowed !important;
+}
+.not-allowed:active {
+    pointer-events: none !important;
+}
 
 .button {
     height: 35px;

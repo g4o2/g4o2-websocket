@@ -11,6 +11,7 @@
     <p>Press <kbd>Enter</kbd> to submit a message</p>
     <p>Press <kbd>/</kbd> to select | <kbd>Esc</kbd> to deselect</p>
     <p>Chatlog not saved and you can't edit messages you sent</p>
+    <p>You can send a message every 3 seconds</p>
     <p>Test version of <a style="color: lightblue" href="https://php-sql-chat.maxhu787.repl.co/">g4o2-chat</a></p>
   </div>
   <div id="messages">
@@ -28,7 +29,7 @@
     <div>
       <!--<input pattern=".{1,}" required title="3 characters minimum" id='message-input' type="text" name="message" size="60" placeholder="Enter message and submit" />-->
       <input id='input' autocomplete="off" type="text" name="message" size="60" style="width: 55vw;"
-        placeholder="Enter message and submit" /><button class='btn button' id="send">Send</button>
+        placeholder="Enter message and submit" /><button class='btn button not-allowed' id="send">Send</button>
     </div>
   </form>
 
@@ -40,6 +41,7 @@
     var messages = document.getElementById('messages');
     var form = document.getElementById('form');
     var input = document.getElementById('input');
+    var submitBtn = document.getElementById('send');
     const usernameRegex = /\w/g;
     do {
       username = prompt('Username');
@@ -56,8 +58,11 @@
         let date = element['message_date'];
         date.toLocaleString();
         let username = element['username'];
-        let message = element['message'];
-        item.innerHTML = `<a href='${pfpLink}' ><img class='profile-image' src='/img/0000001.jpg'></a><div class='message-container'><p class='message-info'>${username} ${date}</p><p class='message'><span style='word-wrap: break-word;'>${message}</span><button class='edit-message'>Edit</button></p></div>`;
+        let message = element['message']
+        let messageFiltered = message.replace(/[\u00A0-\u9999<>\&]/g, function (i) {
+          return '&#' + i.charCodeAt(0) + ';';
+        });
+        item.innerHTML = `<a href='${pfpLink}' ><img class='profile-image' src='/img/default-pfp.png'></a><div class='message-container'><p class='message-info'>${username} ${date}</p><p class='message'><span style='word-wrap: break-word;'>${messageFiltered}</span><button class='edit-message'>Edit</button></p></div>`;
         messages.appendChild(item);
         let chat = document.getElementById('messages')
         chat.scrollTop = chat.scrollHeight;
@@ -83,12 +88,21 @@
     socket.on('message-submit', function (messageDetails) {
       let pfpLink = '#';
       let item = document.createElement('div');
+      let username = messageDetails.username;
       let date = messageDetails.date;
       date.toLocaleString();
-      item.innerHTML = `<a href='${pfpLink}' ><img class='profile-image' src='/img/default-pfp.png'></a><div class='message-container'><p class='message-info'>${messageDetails.username} ${date}</p><p class='message'><span style='word-wrap: break-word;'>${messageDetails.message}</span><button class='edit-message'>Edit</button></p></div>`;
+      let message = messageDetails.message;
+      let messageFiltered = message.replace(/[\u00A0-\u9999<>\&]/g, function (i) {
+        return '&#' + i.charCodeAt(0) + ';';
+      });
+      item.innerHTML = `<a href='${pfpLink}' ><img class='profile-image' src='/img/default-pfp.png'></a><div class='message-container'><p class='message-info'>${username} ${date}</p><p class='message'><span style='word-wrap: break-word;'>${messageFiltered}</span><button class='edit-message'>Edit</button></p></div>`;
       messages.appendChild(item);
       let chat = document.getElementById('messages')
       chat.scrollTop = chat.scrollHeight;
+      submitBtn.classList.add('not-allowed');
+      setTimeout(() => {
+        submitBtn.classList.remove('not-allowed');
+      }, "3000")
     });
     socket.on('user-connect', function (username) {
       var item = document.createElement('div');
@@ -115,6 +129,9 @@
         }
       }
     });
+    setTimeout(() => {
+        submitBtn.classList.remove('not-allowed');
+      }, "3000")
   </script>
 </body>
 
