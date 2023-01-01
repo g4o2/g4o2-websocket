@@ -1,10 +1,10 @@
 // require('dotenv').config()
 const mysql = require('mysql')
 var con = mysql.createConnection({
-  host: 'localhost',
-  user: 'g4o2',
-  password: 'g4o2',
-  database: 'misc'
+  host: 'sql12.freemysqlhosting.net',
+  user: 'sql12561191',
+  password: 'JFfUUVYYB3',
+  database: 'sql12561191'
 });
 
 con.connect(function(err) {
@@ -18,7 +18,7 @@ con.query(sql, function(err, result) {
   console.log("1 record inserted");
 });
 */
-con.query('SELECT * from chatlog', (err, rows, fields) => {
+con.query('SELECT * from g4o2', (err, rows, fields) => {
   if (err) throw err
 
   rows = rows.map(v => Object.assign({}, v));
@@ -26,6 +26,7 @@ con.query('SELECT * from chatlog', (err, rows, fields) => {
   rows.forEach(element => {
     console.log(element['message'])
   });
+  console.log(rows)
 })
 
 con.end(); 

@@ -15,10 +15,15 @@ var con = mysql.createConnection({
 */
 
 var con = mysql.createConnection({
-  host: 'localhost',
-  user: 'g4o2',
-  password: 'g4o2',
-  database: 'misc'
+  host: 'sql12.freemysqlhosting.net',
+  user: 'sql12561191',
+  password: 'JFfUUVYYB3',
+  database: 'sql12561191'
+});
+
+con.connect(function (err) {
+  if (err) throw err;
+  console.log("Connected");
 });
 
 app.get('/style.css', (req, res) => {
@@ -53,11 +58,6 @@ io.on('connection', (socket) => {
   socket.on('message-submit', (messageDetails) => {
     io.emit('message-submit', messageDetails);
     console.log(messageDetails);
-    con.connect(function (err) {
-      if (err) throw err;
-      console.log("Connected");
-    });
-    /*
     let username = messageDetails.username;
     let message = messageDetails.message;
     let date = messageDetails.date;
@@ -66,15 +66,21 @@ io.on('connection', (socket) => {
       if (err) throw err;
       console.log("1 record inserted");
     });
-    con.end();
-    */
+    // con.end();
   });
 })
 io.on('connection', (socket) => {
   socket.on('load-messages', (username) => {
     console.log(`${username} load chat`)
-    messageData=   `${username} load chat`;
-    io.emit('load-messages', messageData);
+    con.query('SELECT * from g4o2', (err, rows, fields) => {
+      if (err) throw err
+      rows = rows.map(v => Object.assign({}, v));
+      io.emit('load-messages', rows);
+      console.log(rows);
+      /*rows.forEach(element => {
+        console.log(element['message'])
+      });*/
+    })
   })
 })
 server.listen(3000, () => {

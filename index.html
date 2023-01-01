@@ -39,7 +39,6 @@
     var form = document.getElementById('form');
     var input = document.getElementById('input');
     const usernameRegex = /\w/g;
-
     do {
       username = prompt('Username');
     } while (!username.match(usernameRegex))
@@ -47,9 +46,6 @@
       socket.emit('user-connect', username);
     }
     socket.emit('load-messages', username);
-    socket.on('load-messages', function (messageData) {
-      console.log(messageData);
-    })
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         if (input.value) {
@@ -84,11 +80,9 @@
         window.scrollTo(0, document.body.scrollHeight);
     })
 
-    socket.on('load-chat', function(chatData) {
+    socket.on('load-messages', function(chatData) {
       console.log(chatData);
     })
-
-
 
     window.addEventListener("keydown", event => {
         if ((event.keyCode == 191)) {
