@@ -85,7 +85,7 @@
       let item = document.createElement('div');
       let date = messageDetails.date;
       date.toLocaleString();
-      item.innerHTML = `<a href='${pfpLink}' ><img class='profile-image' src='/img/0000001.jpg'></a><div class='message-container'><p class='message-info'>${messageDetails.username} ${date}</p><p class='message'><span style='word-wrap: break-word;'>${messageDetails.message}</span><button class='edit-message'>Edit</button></p></div>`;
+      item.innerHTML = `<a href='${pfpLink}' ><img class='profile-image' src='/img/default-pfp.png'></a><div class='message-container'><p class='message-info'>${messageDetails.username} ${date}</p><p class='message'><span style='word-wrap: break-word;'>${messageDetails.message}</span><button class='edit-message'>Edit</button></p></div>`;
       messages.appendChild(item);
       let chat = document.getElementById('messages')
       chat.scrollTop = chat.scrollHeight;
