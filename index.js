@@ -71,15 +71,12 @@ io.on('connection', (socket) => {
 })
 io.on('connection', (socket) => {
   socket.on('load-messages', (username) => {
-    console.log(`${username} load chat`)
+    console.log(`user ${username} load chat`)
     con.query('SELECT * from g4o2', (err, rows, fields) => {
       if (err) throw err
       rows = rows.map(v => Object.assign({}, v));
       io.emit('load-messages', rows);
       console.log(rows);
-      /*rows.forEach(element => {
-        console.log(element['message'])
-      });*/
     })
   })
 })

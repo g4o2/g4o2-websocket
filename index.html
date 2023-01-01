@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>g4o2</title>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-    <div id="guide">
-      <p>Press <kbd>Enter</kbd> to submit a message</p>
-      <p>Press <kbd>/</kbd> to select | <kbd>Esc</kbd> to deselect</p>
-      <p>Chatlog not saved and you can't edit messages you sent</p>
-      <p>Test version of <a style="color: lightblue" href="https://php-sql-chat.maxhu787.repl.co/">g4o2-chat</a></p>
-    </div>
-    <div id="messages">
-      <p style='text-align:center;color: #ffa500;'>This is the start of all messages</p>
-      <!-- 
+
+<head>
+  <title>g4o2</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div id="guide">
+    <p>Press <kbd>Enter</kbd> to submit a message</p>
+    <p>Press <kbd>/</kbd> to select | <kbd>Esc</kbd> to deselect</p>
+    <p>Chatlog not saved and you can't edit messages you sent</p>
+    <p>Test version of <a style="color: lightblue" href="https://php-sql-chat.maxhu787.repl.co/">g4o2-chat</a></p>
+  </div>
+  <div id="messages">
+    <p style='text-align:center;color: #ffa500;'>This is the start of all messages</p>
+    <!-- 
       <div>
         <a href='#'><img class='profile-image' src='/img/0000001.jpg'></a>
         <div class="message-container">
@@ -21,18 +23,18 @@
           <p class='message'><span>A message</span><button class='edit-message'>Edit</button></p>
         </div>
       </div> -->
+  </div>
+  <form id='form' action="" autocomplete="off">
+    <div>
+      <!--<input pattern=".{1,}" required title="3 characters minimum" id='message-input' type="text" name="message" size="60" placeholder="Enter message and submit" />-->
+      <input id='input' autocomplete="off" type="text" name="message" size="60" style="width: 55vw;"
+        placeholder="Enter message and submit" /><button class='btn button' id="send">Send</button>
     </div>
-    <form id='form' action="" autocomplete="off">
-      <div>
-        <!--<input pattern=".{1,}" required title="3 characters minimum" id='message-input' type="text" name="message" size="60" placeholder="Enter message and submit" />-->
-        <input id='input' autocomplete="off" type="text" name="message" size="60" style="width: 55vw;"
-          placeholder="Enter message and submit" /><button class='btn button' id="send">Send</button>
-      </div>
-    </form>
+  </form>
 
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script>     
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
     var socket = io();
 
     var messages = document.getElementById('messages');
@@ -42,28 +44,43 @@
     do {
       username = prompt('Username');
     } while (!username.match(usernameRegex))
-    if(username) {
+    if (username) {
+      socket.emit('load-messages', username);
       socket.emit('user-connect', username);
     }
-    socket.emit('load-messages', username);
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        if (input.value) {
-          let date = new Date().toLocaleString();
-          messageDetails = {
-            username: username,
-            message: input.value,
-            date: date
-          }
-            socket.emit('message-submit', messageDetails);
-            input.value = '';
+    socket.on('load-messages', function (chatData) {
+      chatData.forEach(element => {
+  
+        let pfpLink = '#';
+        let item = document.createElement('div');
+        let date = element['message_date'];
+        date.toLocaleString();
+        let username = element['username'];
+        let message = element['message'];
+        item.innerHTML = `<a href='${pfpLink}' ><img class='profile-image' src='/img/0000001.jpg'></a><div class='message-container'><p class='message-info'>${username} ${date}</p><p class='message'><span style='word-wrap: break-word;'>${message}</span><button class='edit-message'>Edit</button></p></div>`;
+        messages.appendChild(item);
+        let chat = document.getElementById('messages')
+        chat.scrollTop = chat.scrollHeight;
+      });
+    })
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (input.value) {
+        let date = new Date().toLocaleString();
+        messageDetails = {
+          username: username,
+          message: input.value,
+          date: date
         }
+        socket.emit('message-submit', messageDetails);
+        input.value = '';
+      }
     });
 
     // function getUserTimeZone() {
     //   return Intl.DateTimeFormat().resolvedOptions().timeZone;
     // }
-    socket.on('message-submit', function(messageDetails) {
+    socket.on('message-submit', function (messageDetails) {
       let pfpLink = '#';
       let item = document.createElement('div');
       let date = messageDetails.date;
@@ -73,35 +90,32 @@
       let chat = document.getElementById('messages')
       chat.scrollTop = chat.scrollHeight;
     });
-    socket.on('user-connect', function(username) {
-        var item = document.createElement('div');
-        item.textContent = `User ${username} connected`;
-        messages.appendChild(item);
-        window.scrollTo(0, document.body.scrollHeight);
-    })
-
-    socket.on('load-messages', function(chatData) {
-      console.log(chatData);
+    socket.on('user-connect', function (username) {
+      var item = document.createElement('div');
+      item.textContent = `User ${username} connected`;
+      messages.appendChild(item);
+      window.scrollTo(0, document.body.scrollHeight);
     })
 
     window.addEventListener("keydown", event => {
-        if ((event.keyCode == 191)) {
-          if (input === document.activeElement) {
-            return;
-          } else {
-            input.focus();
-            input.select();
-            event.preventDefault();
-          }
+      if ((event.keyCode == 191)) {
+        if (input === document.activeElement) {
+          return;
+        } else {
+          input.focus();
+          input.select();
+          event.preventDefault();
         }
-        if ((event.keyCode == 27)) {
-          if (input === document.activeElement) {
-            document.activeElement.blur();
-            window.focus();
-            event.preventDefault();
-          }
+      }
+      if ((event.keyCode == 27)) {
+        if (input === document.activeElement) {
+          document.activeElement.blur();
+          window.focus();
+          event.preventDefault();
         }
-      });
-    </script>
-  </body>
+      }
+    });
+  </script>
+</body>
+
 </html>
