@@ -5,20 +5,12 @@ const mysql = require('mysql')
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-/*
+
 var con = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME
-});
-*/
-
-var con = mysql.createConnection({
-  host: 'sql12.freemysqlhosting.net',
-  user: 'sql12561191',
-  password: 'JFfUUVYYB3',
-  database: 'sql12561191'
 });
 
 con.connect(function (err) {
