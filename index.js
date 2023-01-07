@@ -10,7 +10,8 @@ var con = mysql.createConnection({
   host: 'sql12.freemysqlhosting.net',
   user: 'sql12561191',
   password: 'JFfUUVYYB3',
-  database: 'sql12561191'
+  database: 'sql12561191',
+  password: process.env.DB_PASS
 });
 
 con.connect(function (err) {
