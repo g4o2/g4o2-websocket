@@ -68,13 +68,20 @@
         chat.scrollTop = chat.scrollHeight;
       });
     })
+    function escapeRegExp(string) {
+      return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+    }
+    function replaceAll(str, find, replace) {
+      return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+    }
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (input.value) {
         let date = new Date().toLocaleString();
         messageDetails = {
-          username: username,
-          message: input.value,
+          username: replaceAll(username, '<', '¯\\_(ツ)_/¯'),
+          message: replaceAll(input.value, '<', '¯\\_(ツ)_/¯'),
           date: date
         }
         socket.emit('message-submit', messageDetails);
